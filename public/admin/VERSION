@@ -1,0 +1,2 @@
+Sveltia CMS 0.233.1 (MIT) — https://github.com/sveltia/sveltia-cms
+To update: npm pack @sveltia/cms@latest, extract, copy package/dist/sveltia-cms.js here.

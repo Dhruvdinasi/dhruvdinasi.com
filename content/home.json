@@ -1,0 +1,56 @@
+{
+  "eyebrow": "Information Science · RVITM Bangalore",
+  "headlineStart": "I build software that pays attention to",
+  "lede": "I’m Dhruv — a student engineer who turns raw signals into decisions. Video frames into crowd-risk zones, minute-level meter readings into bill forecasts, a few onboarding choices into movie recommendations.",
+  "signals": [
+    {
+      "word": "crowds.",
+      "project": "crowdx",
+      "pipeline": [
+        "YOLOv8",
+        "3×3 zones",
+        "trend",
+        "alert"
+      ]
+    },
+    {
+      "word": "kilowatts.",
+      "project": "smart-energy-meter",
+      "pipeline": [
+        "readings",
+        "z-score",
+        "forecast",
+        "savings"
+      ]
+    },
+    {
+      "word": "taste.",
+      "project": "cinemeta",
+      "pipeline": [
+        "onboarding",
+        "profile",
+        "rank",
+        "explain"
+      ]
+    },
+    {
+      "word": "trips.",
+      "project": "ai-travel-planner",
+      "pipeline": [
+        "constraints",
+        "plan",
+        "days",
+        "save"
+      ]
+    }
+  ],
+  "workKicker": "Selected work",
+  "workTitle": "Projects with a problem at the centre",
+  "workIntro": "Each one has a full case study: the problem, the architecture, the trade-offs, and what isn’t built yet.",
+  "approachTitle": "How I take an idea to something that runs",
+  "skillsTitle": "What I build with",
+  "skillsIntro": "Grouped by what it’s for. Tools used in a project link back to that project.",
+  "beyondTitle": "Line and *length.*",
+  "ctaKicker": "Open to internships · 2026–27",
+  "ctaTitle": "Hiring for software, ML or data? *Let’s talk.*"
+}

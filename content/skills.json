@@ -1,0 +1,239 @@
+{
+  "groups": [
+    {
+      "id": "ml",
+      "title": "AI, ML & data",
+      "blurb": "Detection, regression, anomaly scoring and the data work around them.",
+      "skills": [
+        {
+          "name": "Scikit-learn",
+          "usedIn": [
+            "smart-energy-meter",
+            "disease-prediction"
+          ]
+        },
+        {
+          "name": "YOLOv8",
+          "usedIn": [
+            "crowdx"
+          ]
+        },
+        {
+          "name": "OpenCV",
+          "usedIn": [
+            "crowdx"
+          ]
+        },
+        {
+          "name": "Pandas",
+          "usedIn": [
+            "smart-energy-meter",
+            "disease-prediction"
+          ]
+        },
+        {
+          "name": "NumPy",
+          "usedIn": [
+            "smart-energy-meter",
+            "crowdx"
+          ]
+        },
+        {
+          "name": "TensorFlow",
+          "usedIn": []
+        },
+        {
+          "name": "Recommendation systems",
+          "usedIn": [
+            "cinemeta"
+          ]
+        },
+        {
+          "name": "EDA & statistical analysis",
+          "usedIn": []
+        }
+      ],
+      "showOnHome": true
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend",
+      "blurb": "Interfaces that make a model or an API usable.",
+      "skills": [
+        {
+          "name": "React",
+          "usedIn": [
+            "cinemeta",
+            "ai-travel-planner"
+          ]
+        },
+        {
+          "name": "TypeScript",
+          "usedIn": [
+            "cinemeta"
+          ]
+        },
+        {
+          "name": "JavaScript",
+          "usedIn": [
+            "ai-travel-planner"
+          ]
+        },
+        {
+          "name": "Tailwind CSS",
+          "usedIn": [
+            "ai-travel-planner"
+          ]
+        },
+        {
+          "name": "HTML & CSS",
+          "usedIn": []
+        },
+        {
+          "name": "Streamlit",
+          "usedIn": [
+            "smart-energy-meter"
+          ]
+        }
+      ],
+      "showOnHome": true
+    },
+    {
+      "id": "backend",
+      "title": "Backend & data stores",
+      "blurb": "APIs, real-time servers and the schemas behind them.",
+      "skills": [
+        {
+          "name": "Node.js & Express",
+          "usedIn": [
+            "cinemeta",
+            "ai-travel-planner"
+          ]
+        },
+        {
+          "name": "Flask",
+          "usedIn": [
+            "crowdx"
+          ]
+        },
+        {
+          "name": "REST APIs",
+          "usedIn": [
+            "ai-travel-planner",
+            "crowdx"
+          ]
+        },
+        {
+          "name": "MongoDB & Mongoose",
+          "usedIn": [
+            "cinemeta",
+            "ai-travel-planner",
+            "crowdx"
+          ]
+        },
+        {
+          "name": "MySQL / SQL",
+          "usedIn": []
+        },
+        {
+          "name": "Twilio",
+          "usedIn": [
+            "crowdx"
+          ]
+        }
+      ],
+      "showOnHome": true
+    },
+    {
+      "id": "languages",
+      "title": "Languages",
+      "blurb": "Python for data and ML; JavaScript/TypeScript for the web.",
+      "skills": [
+        {
+          "name": "Python",
+          "usedIn": [
+            "crowdx",
+            "smart-energy-meter",
+            "disease-prediction"
+          ]
+        },
+        {
+          "name": "Java",
+          "usedIn": []
+        },
+        {
+          "name": "C",
+          "usedIn": []
+        },
+        {
+          "name": "JavaScript / TypeScript",
+          "usedIn": [
+            "ai-travel-planner",
+            "cinemeta"
+          ]
+        },
+        {
+          "name": "SQL",
+          "usedIn": []
+        }
+      ],
+      "showOnHome": false
+    },
+    {
+      "id": "tools",
+      "title": "Tools, cloud & BI",
+      "blurb": "Day-to-day tools, plus working knowledge of cloud and automation.",
+      "skills": [
+        {
+          "name": "Git & GitHub",
+          "usedIn": []
+        },
+        {
+          "name": "VS Code",
+          "usedIn": []
+        },
+        {
+          "name": "Power BI · Tableau · Excel",
+          "usedIn": []
+        },
+        {
+          "name": "AWS & Azure (fundamentals)",
+          "usedIn": []
+        },
+        {
+          "name": "Jenkins · Ansible (working knowledge)",
+          "usedIn": []
+        }
+      ],
+      "showOnHome": false
+    },
+    {
+      "id": "core",
+      "title": "CS foundations",
+      "blurb": "The coursework underneath it all.",
+      "skills": [
+        {
+          "name": "Data structures & algorithms",
+          "usedIn": []
+        },
+        {
+          "name": "DBMS",
+          "usedIn": []
+        },
+        {
+          "name": "OOP",
+          "usedIn": []
+        },
+        {
+          "name": "Operating systems",
+          "usedIn": []
+        },
+        {
+          "name": "Computer networks",
+          "usedIn": []
+        }
+      ],
+      "showOnHome": false
+    }
+  ]
+}

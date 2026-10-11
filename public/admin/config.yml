@@ -1,0 +1,457 @@
+# Site editor (Sveltia CMS) — open https://dhruvdinasi.com/admin
+# Every save commits a JSON file to GitHub; Vercel rebuilds the site in about a minute.
+# If an edit breaks a rule (e.g. a missing required field), the build fails and the
+# previous version of the site stays live — check the Vercel dashboard for the message.
+#
+# Change `repo` below if your GitHub repository has a different name.
+
+backend:
+  name: github
+  repo: Dhruvdinasi/dhruvdinasi.com
+  branch: main
+  commit_messages:
+    create: 'Add {{collection}} “{{slug}}”'
+    update: 'Update {{collection}} “{{slug}}”'
+    delete: 'Delete {{collection}} “{{slug}}”'
+    uploadMedia: 'Upload “{{path}}”'
+    deleteMedia: 'Delete “{{path}}”'
+
+media_folder: public/uploads
+public_folder: /uploads
+site_url: https://dhruvdinasi.com
+display_url: https://dhruvdinasi.com
+logo:
+  src: /favicon.svg
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  # ───────────────────────────── Certifications ─────────────────────────────
+  - name: certifications
+    label: Certifications
+    label_singular: Certification
+    description: >-
+      Add a new certificate here. Upload an image of it (PNG/JPG/WebP — a screenshot of the PDF is fine)
+      so it shows as a card; optionally attach the PDF too. It appears on /certifications, in the About
+      timeline, and on the resume page if “Show on resume” is on.
+    folder: content/certifications
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: '{{title}}'
+    identifier_field: title
+    summary: '{{title}} — {{issuer}} ({{date}})'
+    sortable_fields: [date, title, issuer]
+    view_groups:
+      - { label: Group, field: group }
+    media_folder: /public/certs
+    public_folder: /certs
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: issuer, label: Issuer, widget: string, hint: 'Organisation that issued it, e.g. “Cisco Networking Academy”.' }
+      - { name: via, label: Platform / details, widget: string, required: false, hint: 'Optional, e.g. “Forage” or “Coursera · 6 weeks”.' }
+      - name: date
+        label: Date issued
+        widget: datetime
+        time_format: false
+        format: YYYY-MM-DD
+        required: false
+      - name: group
+        label: Group
+        widget: select
+        options: ['AI & data', 'Software engineering', 'Cloud', 'Security', 'Internship']
+        default: 'AI & data'
+      - name: topics
+        label: Topics
+        widget: list
+        required: false
+        hint: Short tags shown on the card.
+        field: { name: topic, label: Topic, widget: string }
+      - name: image
+        label: Certificate image
+        widget: image
+        required: false
+        hint: PNG, JPG or WebP. This is what visitors see. Without it, the card shows a placeholder.
+        accept: image/png,image/jpeg,image/webp
+      - name: file
+        label: Certificate file (PDF)
+        widget: file
+        required: false
+        hint: Optional. Adds a “PDF” link on the card.
+        accept: application/pdf
+      - { name: credentialId, label: Credential ID, widget: string, required: false }
+      - { name: url, label: Verification link, widget: string, required: false, hint: 'Full URL starting with https:// — adds a “Verify” link.' }
+      - { name: showOnResume, label: Show on resume page, widget: boolean, default: false }
+      - { name: hidden, label: Hide from the site, widget: boolean, default: false }
+
+  # ───────────────────────────── Projects ─────────────────────────────
+  - name: projects
+    label: Projects
+    label_singular: Project
+    description: >-
+      Each project gets a card and a case-study page at /projects/<file-name>. The file name is created
+      from the title when you first save and becomes the URL — it doesn’t change if you rename the project later.
+      Empty case-study sections are simply hidden.
+    folder: content/projects
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: '{{title}}'
+    identifier_field: title
+    summary: '{{order}}. {{title}} ({{date}})'
+    sortable_fields: [order, title, sortDate]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: tagline, label: One-line summary, widget: text, hint: Shown on cards and in search results. }
+      - { name: order, label: Order, widget: number, value_type: int, default: 10, hint: 'Lower numbers appear first.' }
+      - { name: featured, label: Feature on home page, widget: boolean, default: false }
+      - { name: caseStudy, label: Has a full case-study page, widget: boolean, default: true, hint: 'Turn off for small projects — they’re listed under “Smaller projects”.' }
+      - { name: date, label: Date (as shown), widget: string, hint: 'e.g. “Mar 2026” or “2026”.' }
+      - { name: sortDate, label: Date for sorting (YYYY-MM), widget: string, pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM, e.g. 2026-03'] }
+      - { name: context, label: Context label, widget: string, hint: 'e.g. “Hackathon build · public safety”.' }
+      - name: categories
+        label: Categories
+        widget: select
+        multiple: true
+        options: ['AI/ML', 'Full-stack', 'Data analytics', 'Computer vision']
+        required: false
+      - name: stack
+        label: Tech stack
+        widget: list
+        field: { name: tech, label: Technology, widget: string }
+      - { name: repo, label: GitHub link, widget: string, required: false }
+      - { name: demo, label: Live demo link, widget: string, required: false }
+      - name: motif
+        label: Card artwork
+        widget: select
+        options:
+          - { label: 'Zone grid', value: grid }
+          - { label: 'Signal wave', value: wave }
+          - { label: 'Orbit', value: orbit }
+          - { label: 'Route', value: route }
+          - { label: 'Network', value: nodes }
+        default: nodes
+      - { name: overview, label: Overview, widget: text }
+      - { name: problem, label: Problem, widget: text, required: false }
+      - { name: motivation, label: Why I built it, widget: text, required: false }
+      - name: objectives
+        label: Objectives
+        widget: list
+        required: false
+        field: { name: item, label: Objective, widget: string }
+      - name: features
+        label: Key features
+        widget: list
+        required: false
+        field: { name: item, label: Feature, widget: string }
+      - name: architecture
+        label: Architecture stages
+        label_singular: Stage
+        widget: list
+        required: false
+        hint: In the order data flows through the system — drawn as the architecture diagram.
+        summary: '{{label}} — {{tech}}'
+        fields:
+          - { name: label, label: Stage, widget: string }
+          - { name: detail, label: What it does, widget: string }
+          - { name: tech, label: Technology, widget: string, required: false }
+      - name: workflow
+        label: Workflow steps
+        label_singular: Step
+        widget: list
+        required: false
+        summary: '{{title}}'
+        fields:
+          - { name: title, label: Step, widget: string }
+          - { name: detail, label: Detail, widget: text }
+      - name: decisions
+        label: Implementation decisions
+        label_singular: Decision
+        widget: list
+        required: false
+        summary: '{{title}}'
+        fields:
+          - { name: title, label: Decision, widget: string }
+          - { name: detail, label: Why, widget: text }
+      - name: challenges
+        label: Challenges & solutions
+        label_singular: Challenge
+        widget: list
+        required: false
+        summary: '{{challenge}}'
+        fields:
+          - { name: challenge, label: Challenge, widget: string }
+          - { name: solution, label: Solution, widget: text }
+      - name: testing
+        label: Testing & validation
+        widget: list
+        required: false
+        field: { name: item, label: Point, widget: string }
+      - name: limitations
+        label: Current limitations
+        widget: list
+        required: false
+        field: { name: item, label: Limitation, widget: string }
+      - name: improvements
+        label: Planned improvements
+        widget: list
+        required: false
+        field: { name: item, label: Improvement, widget: string }
+      - name: media
+        label: Screenshots
+        label_singular: Screenshot
+        widget: list
+        required: false
+        summary: '{{caption}}'
+        fields:
+          - { name: src, label: Image, widget: image, media_folder: /public/projects, public_folder: /projects }
+          - { name: alt, label: Description (for screen readers), widget: string }
+          - { name: caption, label: Caption, widget: string, required: false }
+      - { name: verification, label: Source note, widget: text, required: false, hint: 'Where the facts on this page come from, e.g. “Written from the public repository”.' }
+      - { name: showOnResume, label: Show on resume page, widget: boolean, default: false }
+      - { name: resumeStack, label: Resume — tech line, widget: string, required: false }
+      - name: resumePoints
+        label: Resume — bullet points
+        widget: list
+        required: false
+        field: { name: item, label: Bullet, widget: text }
+
+  # ───────────────────────────── Experience ─────────────────────────────
+  - name: experience
+    label: Experience
+    label_singular: Experience entry
+    description: Internships and jobs. Shown on the resume page, the home page (newest first) and the timeline.
+    folder: content/experience
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: '{{organisation}}-{{role}}'
+    identifier_field: role
+    summary: '{{role}} — {{organisation}}'
+    fields:
+      - { name: role, label: Role, widget: string }
+      - { name: organisation, label: Organisation, widget: string }
+      - { name: programme, label: Programme, widget: string, required: false }
+      - { name: type, label: Type, widget: string, required: false, hint: 'e.g. “Project-based internship”, “Summer internship”.' }
+      - { name: start, label: Start (YYYY-MM), widget: string, required: false, pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM'] }
+      - { name: end, label: End (YYYY-MM), widget: string, required: false, hint: Leave empty if ongoing., pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM'] }
+      - { name: duration, label: Duration, widget: string, required: false, hint: 'e.g. “2 months”.' }
+      - { name: location, label: Location, widget: string, required: false }
+      - { name: summary, label: Summary, widget: text }
+      - name: points
+        label: What I did
+        widget: list
+        required: false
+        field: { name: item, label: Point, widget: text }
+      - name: certificate
+        label: Linked certificate
+        widget: relation
+        collection: certifications
+        value_field: '{{slug}}'
+        search_fields: [title, issuer]
+        display_fields: [title]
+        required: false
+      - { name: order, label: Order, widget: number, value_type: int, default: 10, hint: Lower numbers appear first. }
+
+  # ───────────────────────────── Settings (single files) ─────────────────────────────
+  - name: settings
+    label: Site settings
+    editor: { preview: false }
+    files:
+      - name: site
+        label: Profile, links & SEO
+        file: content/site.json
+        format: json
+        fields:
+          - { name: name, label: Display name, widget: string }
+          - { name: fullName, label: Full name, widget: string }
+          - { name: role, label: One-line role, widget: string }
+          - { name: description, label: Search / social description, widget: text, hint: '~150 characters. Used by Google and link previews.' }
+          - { name: focus, label: Focus areas, widget: string }
+          - { name: location, label: Location, widget: string }
+          - { name: email, label: Public email, widget: string }
+          - { name: github, label: GitHub URL, widget: string }
+          - { name: githubHandle, label: GitHub username, widget: string }
+          - { name: linkedin, label: LinkedIn URL, widget: string }
+          - { name: college, label: College, widget: string }
+          - { name: degree, label: Degree, widget: string }
+          - { name: startYear, label: Start year, widget: string }
+          - { name: graduationYear, label: Graduation year, widget: string }
+          - { name: cgpa, label: CGPA, widget: string, required: false }
+          - { name: openTo, label: Open to, widget: string, required: false }
+          - name: resumePdf
+            label: Resume PDF
+            widget: file
+            media_folder: /public/resume
+            public_folder: /resume
+            accept: application/pdf
+            hint: Upload a new PDF here to replace the downloadable resume.
+          - { name: resumeUpdated, label: Resume last updated, widget: datetime, time_format: false, format: YYYY-MM-DD }
+          - { name: url, label: Site URL, widget: string, hint: Don’t change unless the main domain changes. }
+          - { name: ogImage, label: Social preview image path, widget: string }
+
+      - name: home
+        label: Home page
+        file: content/home.json
+        format: json
+        fields:
+          - { name: eyebrow, label: Small line above the headline, widget: string }
+          - { name: headlineStart, label: Headline (before the rotating word), widget: string }
+          - name: signals
+            label: Rotating words
+            label_singular: Word
+            widget: list
+            hint: Each word links the hero panel to a project.
+            summary: '{{word}} → {{project}}'
+            fields:
+              - { name: word, label: Word, widget: string }
+              - { name: project, label: Project, widget: relation, collection: projects, value_field: '{{slug}}', search_fields: [title], display_fields: [title] }
+              - name: pipeline
+                label: Pipeline steps (short)
+                widget: list
+                field: { name: step, label: Step, widget: string }
+          - { name: lede, label: Intro paragraph, widget: text }
+          - { name: workKicker, label: Work section — label, widget: string }
+          - { name: workTitle, label: Work section — title, widget: string, hint: 'Wrap words in *asterisks* for the italic accent.' }
+          - { name: workIntro, label: Work section — intro, widget: text, required: false }
+          - { name: approachTitle, label: Approach section — title, widget: string }
+          - { name: skillsTitle, label: Skills section — title, widget: string }
+          - { name: skillsIntro, label: Skills section — intro, widget: text, required: false }
+          - { name: beyondTitle, label: Beyond-code card — title, widget: string }
+          - { name: ctaKicker, label: Closing banner — label, widget: string }
+          - { name: ctaTitle, label: Closing banner — title, widget: string }
+
+      - name: about
+        label: About page & Now
+        file: content/about.json
+        format: json
+        fields:
+          - { name: headline, label: Headline, widget: string, hint: 'Wrap words in *asterisks* for the italic accent.' }
+          - name: intro
+            label: Intro paragraphs
+            widget: list
+            field: { name: paragraph, label: Paragraph, widget: text }
+          - { name: aspiration, label: Career aspiration, widget: text, required: false }
+          - name: approach
+            label: How I work
+            widget: list
+            summary: '{{title}}'
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: body, label: Text, widget: text }
+          - name: learningNext
+            label: Learning next
+            widget: list
+            field: { name: item, label: Item, widget: string }
+          - name: interests
+            label: Beyond code — interests & hobbies
+            label_singular: Interest
+            widget: list
+            hint: The first one also appears on the home page.
+            summary: '{{title}}'
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: kicker, label: Small label, widget: string }
+              - { name: body, label: Text, widget: text }
+          - { name: nowReviewed, label: Now — last reviewed, widget: string, hint: 'e.g. “November 2026”.' }
+          - name: now
+            label: Now — what I’m doing
+            widget: list
+            summary: '{{label}}: {{text}}'
+            fields:
+              - { name: label, label: Label, widget: string, hint: 'e.g. Studying, Building, Looking for' }
+              - { name: text, label: Text, widget: string }
+
+      - name: pages
+        label: Page headings
+        file: content/pages.json
+        format: json
+        fields:
+          - { name: projectsHeadline, label: Projects — headline, widget: string, hint: 'Wrap words in *asterisks* for the italic accent.' }
+          - { name: projectsIntro, label: Projects — intro, widget: text, required: false }
+          - { name: certificationsHeadline, label: Certifications — headline, widget: string }
+          - { name: certificationsIntro, label: Certifications — intro, widget: text, required: false }
+          - { name: contactHeadline, label: Contact — headline, widget: string }
+          - { name: contactIntro, label: Contact — intro, widget: text, required: false }
+          - { name: footerLine, label: Footer line, widget: string }
+
+      - name: achievements
+        label: Achievements
+        file: content/achievements.json
+        format: json
+        fields:
+          - name: items
+            label: Achievements
+            label_singular: Achievement
+            widget: list
+            summary: '{{title}} ({{years}})'
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: detail, label: Detail, widget: string }
+              - { name: years, label: When (as shown), widget: string }
+              - { name: sortDate, label: Date for sorting (YYYY-MM), widget: string, pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM'] }
+              - { name: showOnHome, label: Show on home page, widget: boolean, default: false }
+
+      - name: skills
+        label: Skills
+        file: content/skills.json
+        format: json
+        fields:
+          - name: groups
+            label: Skill groups
+            label_singular: Group
+            widget: list
+            summary: '{{title}}'
+            fields:
+              - { name: id, label: ID (lowercase-with-dashes), widget: string, pattern: ['^[a-z0-9-]+$', 'lowercase letters, numbers and dashes'] }
+              - { name: title, label: Title, widget: string }
+              - { name: blurb, label: One-line description, widget: string, required: false }
+              - { name: showOnHome, label: Show on home page, widget: boolean, default: false }
+              - name: skills
+                label: Skills
+                label_singular: Skill
+                widget: list
+                summary: '{{name}}'
+                fields:
+                  - { name: name, label: Skill, widget: string }
+                  - name: usedIn
+                    label: Used in projects
+                    widget: relation
+                    collection: projects
+                    value_field: '{{slug}}'
+                    search_fields: [title]
+                    display_fields: [title]
+                    multiple: true
+                    required: false
+
+      - name: resume
+        label: Resume page
+        file: content/resume.json
+        format: json
+        fields:
+          - { name: summary, label: Summary, widget: text, hint: 'Projects, certifications and experience on the resume page come from their own sections — use “Show on resume page” there.' }
+          - name: education
+            label: Education
+            widget: list
+            summary: '{{degree}} — {{school}}'
+            fields:
+              - { name: school, label: School / college, widget: string }
+              - { name: degree, label: Degree / level, widget: string }
+              - { name: when, label: Years (as shown), widget: string, required: false }
+              - { name: score, label: Score, widget: string, required: false }
+              - { name: sortDate, label: Start date for sorting (YYYY-MM), widget: string, pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM'] }
+          - name: skills
+            label: Technical skills
+            widget: list
+            summary: '{{label}}'
+            fields:
+              - { name: label, label: Category, widget: string }
+              - { name: value, label: Skills, widget: string }
+          - { name: workshops, label: Workshops, widget: text, required: false }
+          - { name: extracurricular, label: Extra-curricular, widget: text, required: false }
+          - { name: softSkills, label: Soft skills, widget: string, required: false }

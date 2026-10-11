@@ -1,0 +1,196 @@
+{
+  "title": "CINEMETA",
+  "tagline": "A movie recommender built for the cold-start problem — personal from a user’s first session, with a reason for every pick.",
+  "order": 1,
+  "featured": true,
+  "caseStudy": true,
+  "date": "2026",
+  "sortDate": "2026-08",
+  "context": "Final-year project · RVITM",
+  "categories": [
+    "AI/ML",
+    "Full-stack"
+  ],
+  "stack": [
+    "React",
+    "TypeScript",
+    "Node.js",
+    "Express",
+    "TMDb API",
+    "MongoDB",
+    "JWT",
+    "Docker",
+    "Gemini API",
+    "Tailwind CSS"
+  ],
+  "repo": "https://github.com/Dhruvdinasi/CINEMETA",
+  "motif": "orbit",
+  "overview": "CINEMETA is a full-stack movie recommendation platform designed for users the system knows nothing about yet. A five-step onboarding captures seed films, genres, languages, moods and limits on rating and runtime. A two-stage engine — multi-channel candidate retrieval, then stage-aware ranking — turns that into recommendations, each with a confidence score and a plain-language reason. As the user likes, dislikes, rates and watchlists films, the engine shifts how much it trusts each signal.",
+  "problem": "Recommenders that learn from ratings have nothing to work with when someone first arrives — the cold-start problem. Most apps fall back to “popular now”, which is generic exactly when a user is deciding whether the product understands them.",
+  "motivation": "My final-year project in Information Science and Engineering at RVITM (Project Work, 2026–27). Cold start is a well-known open problem in recommender systems, and solving it well needs the onboarding flow, the data model and the ranking logic to be designed together.",
+  "objectives": [
+    "Collect enough taste signal in onboarding to personalise the very first recommendations",
+    "Adapt the ranking as a user moves from cold start to an established profile",
+    "Explain every recommendation in plain language, with a confidence score",
+    "Use real movie metadata from TMDb, with a local fallback when the API is unavailable",
+    "Ship a complete product: accounts, watchlist, ratings, reviews and an analytics view"
+  ],
+  "features": [
+    "Five-step onboarding: pick up to 8 seed films, favourite genres, languages, moods, minimum rating and maximum runtime",
+    "Taste profile with positive and negative signals — liked and disliked films, genres, directors, cast, moods and languages",
+    "Three user stages — cold start, few-shot and warm — chosen from how much the user has told the system",
+    "Candidate retrieval from four channels: thematic content, explicit preferences, seed-film prototypes and a Bayesian quality prior (~150 candidates)",
+    "Ranking over seven normalised signals whose weights change with the user’s stage",
+    "Penalty for films similar to what the user disliked",
+    "Diversity re-ranking (Maximal Marginal Relevance, λ = 0.8) so the list isn’t ten versions of one film",
+    "Explanation sentence, top matched reasons and a confidence score on every recommendation",
+    "“More like this” similar-movie search, trailers and streaming providers via TMDb",
+    "Natural-language movie search and an AI assistant powered by Gemini",
+    "Watchlist, likes, dislikes, watched history, ratings and reviews",
+    "JWT authentication with bcrypt-hashed passwords",
+    "Admin analytics dashboard",
+    "MongoDB via Mongoose when configured, in-memory store otherwise; Docker Compose for the full stack"
+  ],
+  "architecture": [
+    {
+      "label": "Onboarding & UI",
+      "detail": "Five-step taste wizard, home rows, watchlist, profile, admin",
+      "tech": "React · TS"
+    },
+    {
+      "label": "REST API",
+      "detail": "Auth, onboarding, recommendations, movies, interactions, reviews",
+      "tech": "Express"
+    },
+    {
+      "label": "Feature extractor",
+      "detail": "Builds movie vectors and the user’s positive/negative taste profile; picks the user stage",
+      "tech": "TypeScript"
+    },
+    {
+      "label": "Candidate generator",
+      "detail": "Four retrieval channels merge into a ~150-film pool",
+      "tech": "TypeScript"
+    },
+    {
+      "label": "Ranker",
+      "detail": "Seven normalised signals, stage-adaptive weights, dislike penalty",
+      "tech": "TypeScript"
+    },
+    {
+      "label": "Re-rank & explain",
+      "detail": "MMR diversity, confidence score, reason sentence",
+      "tech": "TypeScript"
+    },
+    {
+      "label": "Movie data",
+      "detail": "Metadata, keywords, cast, trailers, providers with caching and fallback",
+      "tech": "TMDb API"
+    },
+    {
+      "label": "Storage",
+      "detail": "Users, interactions, reviews",
+      "tech": "MongoDB · in-memory"
+    }
+  ],
+  "workflow": [
+    {
+      "title": "Onboard",
+      "detail": "The user picks seed films, genres, languages and moods, and sets minimum rating and maximum runtime."
+    },
+    {
+      "title": "Build the taste profile",
+      "detail": "Seed films and preferences become weighted genre, keyword, director, cast, mood and language signals, plus a negative profile from dislikes."
+    },
+    {
+      "title": "Choose the stage",
+      "detail": "Fewer than 2 signals is cold start, 2–7 is few-shot, 8 or more is warm."
+    },
+    {
+      "title": "Retrieve candidates",
+      "detail": "Four channels each nominate films; their union forms a pool of about 150."
+    },
+    {
+      "title": "Rank",
+      "detail": "Each candidate is scored on seven normalised signals. At cold start, language and genre carry the most weight; as the profile grows, content similarity rises from 14% to 36% of the score."
+    },
+    {
+      "title": "Diversify & explain",
+      "detail": "MMR re-ranking trades a little relevance for variety; each pick gets a confidence score and a sentence explaining why."
+    },
+    {
+      "title": "Learn from feedback",
+      "detail": "Likes, dislikes, ratings, watched and watchlist actions update the profile for the next request."
+    }
+  ],
+  "decisions": [
+    {
+      "title": "Stage-adaptive weights",
+      "detail": "A new user’s explicit choices are the most reliable signal, so they dominate early; content similarity to their films takes over as evidence accumulates."
+    },
+    {
+      "title": "Two-stage retrieve-then-rank",
+      "detail": "Cheap multi-channel retrieval narrows the catalogue before the more expensive scoring, and ensures candidates come from several kinds of evidence."
+    },
+    {
+      "title": "Normalise before weighting",
+      "detail": "Every signal is min-max normalised to [0, 1] so the stage weights mean what they say."
+    },
+    {
+      "title": "Negative signals count",
+      "detail": "Dislikes build a separate profile that penalises similar films instead of being ignored."
+    },
+    {
+      "title": "Explanations from the scoring itself",
+      "detail": "Reasons are collected while each signal is computed, so the explanation reflects what actually drove the score."
+    },
+    {
+      "title": "Run anywhere",
+      "detail": "MongoDB is optional — without a connection string the app runs on an in-memory store, and TMDb failures fall back to cached data."
+    }
+  ],
+  "challenges": [
+    {
+      "challenge": "Almost no signal for a new user",
+      "solution": "A short, structured onboarding gathers several kinds of preference at once, and the cold-start weights lean on exactly those inputs."
+    },
+    {
+      "challenge": "Lists that are all the same kind of film",
+      "solution": "Maximal Marginal Relevance re-ranking penalises candidates too similar to ones already chosen."
+    },
+    {
+      "challenge": "External API limits and outages",
+      "solution": "TMDb responses are cached and the app falls back to local data when requests fail."
+    },
+    {
+      "challenge": "Making scores understandable",
+      "solution": "Each recommendation carries its top reasons and a calibrated confidence score rather than a raw number."
+    }
+  ],
+  "testing": [
+    "Includes an evaluation module that computes Precision@K, Recall@K, MAP, NDCG, hit rate, diversity and coverage for a recommendation list.",
+    "Relevance in that module is currently judged by heuristic rules (language match plus similarity or genre overlap), not held-out user ratings — so its numbers describe internal consistency, not real-world accuracy, and none are quoted here.",
+    "No automated test suite yet."
+  ],
+  "limitations": [
+    "Ranking is content- and preference-based. There is no trained collaborative-filtering or matrix-factorisation model yet; the “collaborative” endpoint reuses the hybrid engine.",
+    "Stage weights are hand-tuned rather than learned.",
+    "Evaluation uses a heuristic relevance proxy instead of an offline split of real ratings.",
+    "Has not been tested with real users at scale."
+  ],
+  "improvements": [
+    "Train a matrix-factorisation model on a public ratings dataset (e.g. MovieLens) and blend it in for warm users",
+    "Learn the stage weights from data instead of setting them by hand",
+    "Evaluate on held-out ratings and report Precision@K and NDCG honestly",
+    "Automated tests for the feature extractor and ranker",
+    "Public deployment with a demo account"
+  ],
+  "media": [],
+  "verification": "Written from the public CINEMETA repository (backend/ml, server.ts, src/components). Weights, thresholds and features listed here are taken from the code.",
+  "showOnResume": true,
+  "resumeStack": "React, TypeScript, Node.js, Express, MongoDB, TMDb API",
+  "resumePoints": [
+    "Full-stack movie recommender for cold-start users: a five-step onboarding builds a taste profile used for the very first recommendations.",
+    "Two-stage engine with four-channel retrieval, seven-signal ranking whose weights adapt to the user’s stage, MMR diversity re-ranking and a plain-language reason for every pick."
+  ]
+}

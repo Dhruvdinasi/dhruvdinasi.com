@@ -1,0 +1,8 @@
+{
+  "name": "Dhruv Dinasi",
+  "short_name": "Dhruv Dinasi",
+  "icons": [{ "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }],
+  "theme_color": "#090a0d",
+  "background_color": "#090a0d",
+  "display": "browser"
+}

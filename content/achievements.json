@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "title": "VTU South Zone — Runners-up",
+      "detail": "RVITM cricket team, two seasons running.",
+      "years": "2023 & 2024",
+      "sortDate": "2024-01",
+      "showOnHome": true
+    },
+    {
+      "title": "CGPA 8.49 / 10",
+      "detail": "B.E. Information Science and Engineering, RVITM.",
+      "years": "to date",
+      "sortDate": "2026-10",
+      "showOnHome": false
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "summary": "Information Science student with experience in data analytics, machine learning and software development. Skilled in Python, SQL, Pandas, NumPy, Scikit-learn, TensorFlow, Power BI, Tableau and Excel for data analysis, visualisation, predictive modelling and data-driven decision making. Familiar with data cleaning, statistical analysis, exploratory data analysis (EDA) and machine-learning workflows. Working knowledge of Jenkins, Ansible and Microsoft Azure, with strong foundations in data structures & algorithms, DBMS, OOP, operating systems and computer networks.",
+  "education": [
+    {
+      "school": "RV Institute of Technology and Management",
+      "degree": "B.E. — Information Science and Engineering",
+      "when": "2023 – 2027 (expected)",
+      "score": "CGPA 8.49 / 10",
+      "sortDate": "2023-08"
+    },
+    {
+      "school": "Deeksha Center for Learning",
+      "degree": "Pre-University Course (PUC)",
+      "when": "2021 – 2023",
+      "score": "91%",
+      "sortDate": "2021-06"
+    },
+    {
+      "school": "Sri Kumaran’s Children Academy",
+      "degree": "School",
+      "when": "",
+      "score": "88.2%",
+      "sortDate": "2021-03"
+    }
+  ],
+  "skills": [
+    {
+      "label": "Programming languages",
+      "value": "Python, Java, C, JavaScript, SQL, HTML, CSS"
+    },
+    {
+      "label": "Frameworks & libraries",
+      "value": "React.js, Node.js, Express.js, Flask, TensorFlow, Scikit-learn, Pandas, NumPy"
+    },
+    {
+      "label": "Databases & cloud",
+      "value": "MySQL, MongoDB, Microsoft Azure (basics)"
+    },
+    {
+      "label": "Developer tools",
+      "value": "Git, GitHub, VS Code, Power BI, Tableau, Excel"
+    },
+    {
+      "label": "Core concepts",
+      "value": "Data structures, algorithms, DBMS, OOP, operating systems, computer networks, REST APIs, CI/CD basics, automation workflows, machine learning"
+    }
+  ],
+  "workshops": "Full Stack Development, Machine Learning, Artificial Intelligence and Data Analytics.",
+  "extracurricular": "VTU RVITM Cricket Team (South Zone) — Runners-up 2023 & 2024",
+  "softSkills": "Problem solving, communication, teamwork, adaptability"
+}

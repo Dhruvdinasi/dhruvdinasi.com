@@ -1,0 +1,185 @@
+{
+  "title": "Smart Energy Meter",
+  "tagline": "Turns minute-level electricity readings into a bill forecast, anomaly alerts and concrete ways to save.",
+  "date": "Jan 2026",
+  "context": "Personal project · deployed on Streamlit",
+  "categories": [
+    "Data analytics",
+    "AI/ML"
+  ],
+  "stack": [
+    "Python",
+    "Streamlit",
+    "Pandas",
+    "NumPy",
+    "Scikit-learn",
+    "Plotly"
+  ],
+  "repo": "https://github.com/Dhruvdinasi/Smart-Energy-Meter",
+  "demo": "https://smart-energy-meter.streamlit.app/",
+  "featured": true,
+  "caseStudy": true,
+  "motif": "wave",
+  "overview": "A Streamlit app that takes a CSV of household power readings, works out monthly consumption and the bill under a configurable tariff, forecasts next month’s bill with linear regression, flags abnormal readings with Z-scores and attributes them to devices, and finds idle or overused appliances with an estimate of what that waste costs.",
+  "problem": "An electricity bill tells you how much you spent, not why. Without device-level insight it is hard to know which appliance caused a spike, what next month will cost, or where power is being wasted while nobody is using it.",
+  "motivation": "Smart meters produce exactly the data needed to answer those questions. The project explores how far a lightweight analytics pipeline can go with nothing more than a CSV of readings.",
+  "objectives": [
+    "Estimate the monthly bill from raw readings with a configurable tariff and fixed charge",
+    "Forecast the next month’s consumption and bill",
+    "Detect abnormal consumption and identify which device caused it",
+    "Find idle or wasteful device usage and estimate potential savings"
+  ],
+  "features": [
+    "CSV upload with a minute-level timestamp, total active power and optional per-device columns (`*_w`)",
+    "Monthly energy and bill table: energy charge at ₹/kWh plus a fixed charge from sanctioned load",
+    "Per-device monthly consumption chart",
+    "Next-month bill prediction with scikit-learn Linear Regression over monthly totals",
+    "Z-score anomaly detection (|z| > 2) with primary and top-3 contributing devices",
+    "Idle-waste detection: sustained low-power runs below a % of each device’s 99th-percentile peak, with wasted kWh and ₹ savings",
+    "Overuse and unusual-hours detection per device",
+    "Smart insights: peak hour, average daily use, highest-consuming device",
+    "All thresholds adjustable from the sidebar"
+  ],
+  "architecture": [
+    {
+      "label": "Upload",
+      "detail": "CSV of readings + tariff settings",
+      "tech": "Streamlit"
+    },
+    {
+      "label": "Prepare",
+      "detail": "Parse timestamps, detect device columns, minutes → kWh",
+      "tech": "Pandas"
+    },
+    {
+      "label": "Bill",
+      "detail": "Monthly energy, energy charge, fixed charge",
+      "tech": "Pandas"
+    },
+    {
+      "label": "Forecast",
+      "detail": "Next-month kWh and bill",
+      "tech": "Scikit-learn"
+    },
+    {
+      "label": "Anomalies",
+      "detail": "Z-score flags + device attribution",
+      "tech": "NumPy"
+    },
+    {
+      "label": "Optimise",
+      "detail": "Idle runs, overuse, unusual hours, savings",
+      "tech": "Pandas"
+    },
+    {
+      "label": "Visualise",
+      "detail": "Interactive charts and tables",
+      "tech": "Plotly"
+    }
+  ],
+  "workflow": [
+    {
+      "title": "Configure",
+      "detail": "Set cost per kWh, sanctioned load and fixed-charge rate in the sidebar."
+    },
+    {
+      "title": "Upload",
+      "detail": "Load the bundled sample or your own CSV."
+    },
+    {
+      "title": "Summarise",
+      "detail": "See total consumption, the monthly bill table and per-device usage."
+    },
+    {
+      "title": "Forecast",
+      "detail": "A linear trend over monthly totals predicts next month’s kWh and bill."
+    },
+    {
+      "title": "Investigate",
+      "detail": "Review flagged anomalies and which device drove each one."
+    },
+    {
+      "title": "Save",
+      "detail": "Inspect idle and overuse events and the estimated monthly savings."
+    }
+  ],
+  "decisions": [
+    {
+      "title": "Statistical baselines first",
+      "detail": "Z-scores and linear regression are transparent, fast and easy to explain to a non-technical user — a sensible baseline before heavier models."
+    },
+    {
+      "title": "Peak-relative idle threshold",
+      "detail": "Idle is defined relative to each device’s own 99th-percentile power, so a fridge and a TV are judged on their own scale."
+    },
+    {
+      "title": "Everything tunable",
+      "detail": "Tariff, idle percentage and minimum idle duration are sidebar inputs, because the right values differ between households."
+    },
+    {
+      "title": "Streamlit for delivery",
+      "detail": "Streamlit made it possible to ship an interactive, deployed analysis tool without building a separate front end."
+    }
+  ],
+  "challenges": [
+    {
+      "challenge": "Datasets with and without device columns",
+      "solution": "Device-level features are enabled only when `*_w` columns are present; otherwise the app explains what it needs."
+    },
+    {
+      "challenge": "Separating real waste from normal standby",
+      "solution": "An idle event must last a minimum number of consecutive minutes below the device-specific threshold."
+    },
+    {
+      "challenge": "Explaining an anomaly, not just flagging it",
+      "solution": "Each flagged reading is attributed to the device contributing most at that minute, plus the top three."
+    }
+  ],
+  "testing": [
+    "The repository ships a 10,000-row, minute-level sample dataset with six device columns for trying every feature.",
+    "Deployed on Streamlit Community Cloud for hands-on use.",
+    "No automated test suite yet, and the forecast has not been evaluated against held-out months."
+  ],
+  "limitations": [
+    "Linear regression on monthly totals needs several months of data and cannot capture seasonality.",
+    "A fixed |z| > 2 rule assumes roughly normal readings and will over-flag in naturally spiky households.",
+    "Works on uploaded files rather than a live meter feed."
+  ],
+  "improvements": [
+    "Seasonal forecasting (e.g. SARIMA or gradient-boosted models) with backtesting",
+    "Rolling or per-device anomaly baselines, or an Isolation Forest",
+    "Live ingestion from an IoT meter",
+    "Unit tests for billing and idle-detection logic"
+  ],
+  "media": [
+    {
+      "src": "/projects/energy/dashboard.webp",
+      "alt": "Smart Energy Meter dashboard showing total consumption and the monthly energy and bill table",
+      "caption": "Energy summary and monthly bill"
+    },
+    {
+      "src": "/projects/energy/prediction.webp",
+      "alt": "Bar chart of per-device monthly consumption and the predicted bill for next month",
+      "caption": "Device consumption and next-month prediction"
+    },
+    {
+      "src": "/projects/energy/anomalies.webp",
+      "alt": "Table of anomalous readings with Z-scores and the device responsible for each",
+      "caption": "Z-score anomalies with device attribution"
+    },
+    {
+      "src": "/projects/energy/optimization.webp",
+      "alt": "Idle and overuse events per device with estimated savings in rupees",
+      "caption": "Idle-waste and overuse detection"
+    }
+  ],
+  "verification": "Written from the public Smart-Energy-Meter repository (app.py, README, sample_data.csv). Screenshots are from the repository.",
+  "order": 3,
+  "sortDate": "2026-01",
+  "showOnResume": true,
+  "resumeStack": "Python, Streamlit, Pandas, NumPy, Scikit-learn",
+  "resumePoints": [
+    "Monitoring dashboard that processes and visualises electricity usage data and predicts monthly utility bills.",
+    "Automated anomaly-detection workflows for efficient power-usage analysis."
+  ]
+}

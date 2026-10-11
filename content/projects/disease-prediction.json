@@ -1,0 +1,41 @@
+{
+  "title": "Disease Prediction from Symptoms",
+  "tagline": "Compares classical ML classifiers for predicting a disease from a patient’s symptoms.",
+  "date": "Nov 2025",
+  "context": "Academic project",
+  "categories": [
+    "AI/ML",
+    "Data analytics"
+  ],
+  "stack": [
+    "Python",
+    "Scikit-learn",
+    "Pandas",
+    "NumPy"
+  ],
+  "featured": false,
+  "caseStudy": false,
+  "motif": "nodes",
+  "overview": "A machine-learning system trained on datasets covering 500+ diseases and 1,000+ symptoms, comparing several algorithms to improve prediction reliability.",
+  "problem": "",
+  "motivation": "",
+  "objectives": [],
+  "features": [],
+  "architecture": [],
+  "workflow": [],
+  "decisions": [],
+  "challenges": [],
+  "testing": [],
+  "limitations": [],
+  "improvements": [],
+  "media": [],
+  "verification": "From the resume.",
+  "order": 5,
+  "sortDate": "2025-11",
+  "showOnResume": true,
+  "resumeStack": "Python, Scikit-learn, Pandas, NumPy",
+  "resumePoints": [
+    "Machine-learning disease prediction system using datasets with 500+ diseases and 1,000+ symptoms.",
+    "Applied and compared multiple algorithms to improve prediction reliability."
+  ]
+}

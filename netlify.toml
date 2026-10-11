@@ -1,0 +1,47 @@
+# Alternative to Vercel. Use one host, not both.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Canonical domain: dhruvdinasi.com. Everything else 301s to it.
+[[redirects]]
+  from = "https://dhruvdinasi.in/*"
+  to = "https://dhruvdinasi.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.dhruvdinasi.in/*"
+  to = "https://dhruvdinasi.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.dhruvdinasi.com/*"
+  to = "https://dhruvdinasi.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/resume.pdf"
+  to = "/resume/Dhruv-Dinasi-Resume.pdf"
+  status = 302
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains"
+    # No site-wide CSP on Netlify: Netlify can't exclude /admin from a "/*" rule, and the editor
+    # needs to call api.github.com. vercel.json has the strict policy for the main site.
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

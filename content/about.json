@@ -1,0 +1,60 @@
+{
+  "headline": "A student engineer who likes problems with *real inputs.*",
+  "intro": [
+    "I study Information Science and Engineering at RV Institute of Technology and Management in Bangalore. I enjoy building practical applications that solve real problems: picking one, choosing the smallest stack that can solve it, and then debugging my way to something that works end to end.",
+    "My work sits where software engineering meets data. On one side are the things that make a product usable — APIs, databases, a clear interface. On the other are the models and statistics that make it useful — detection, regression, anomaly scoring, recommendation. I like projects that need both."
+  ],
+  "aspiration": "I’m looking for internships in software engineering, machine learning or data science, where I can work on production systems with engineers who will push me to write better code.",
+  "approach": [
+    {
+      "title": "Start from the signal",
+      "body": "Before choosing a model I look at what the data actually is: a webcam frame, a CSV of minute-level wattage, a user’s first five picks. The shape of the input decides the design."
+    },
+    {
+      "title": "Ship the whole loop",
+      "body": "A model in a notebook isn’t a product. I try to carry each idea through to an interface someone can use — a dashboard, an alert, a page."
+    },
+    {
+      "title": "Be honest about the gaps",
+      "body": "Every case study on this site lists what isn’t built yet. Knowing the limits of a system is part of engineering it."
+    }
+  ],
+  "learningNext": [
+    "Proper multi-object tracking (DeepSORT / ByteTrack) and evaluating it on recorded footage",
+    "Time-series forecasting beyond linear trends",
+    "LLM-backed features with real evaluation, building on my GenAI and Agentic AI coursework",
+    "Cloud deployment and CI/CD in practice — moving from AWS and Azure fundamentals to running services"
+  ],
+  "interests": [
+    {
+      "title": "Cricket — bowling",
+      "kicker": "VTU · RVITM team",
+      "body": "I bowl for the RVITM cricket team. We finished runners-up in the VTU South Zone tournament in both 2023 and 2024. Bowling is a lesson in consistency: the same line and length, over after over, adjusting a little each ball based on what the batter does."
+    },
+    {
+      "title": "Building to learn",
+      "kicker": "Side projects",
+      "body": "I like experimenting with new ideas by building them: a hackathon system for crowd safety, an app that explains where an electricity bill goes, a recommender designed for users it knows nothing about yet."
+    },
+    {
+      "title": "AI, closely followed",
+      "kicker": "Coursework & reading",
+      "body": "I keep up with applied AI through structured courses — IBM, Microsoft and LinkedIn, an Agentic AI fellowship — and by trying ideas in code rather than only reading about them."
+    }
+  ],
+  "nowReviewed": "October 2026",
+  "now": [
+    {
+      "label": "Studying",
+      "text": "Final year of B.E. in Information Science and Engineering at RVITM — graduating 2027."
+    },
+    {
+      "label": "Building",
+      "text": "CINEMETA — a cold-start movie recommender, as my final-year project."
+    },
+    {
+      "label": "Looking for",
+      "text": "Software, ML and data internships for 2026–27."
+    }
+  ]
+}

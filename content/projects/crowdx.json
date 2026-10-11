@@ -1,0 +1,182 @@
+{
+  "title": "CrowdX",
+  "tagline": "Real-time crowd-density monitoring that warns organisers when a zone is surging, not after it overflows.",
+  "date": "Mar 2026",
+  "context": "Hackathon build · public safety",
+  "categories": [
+    "Computer vision",
+    "AI/ML"
+  ],
+  "stack": [
+    "Python",
+    "YOLOv8",
+    "OpenCV",
+    "Flask",
+    "Socket.IO",
+    "MongoDB",
+    "Twilio"
+  ],
+  "repo": "https://github.com/Dhruvdinasi/CrowdX",
+  "featured": true,
+  "caseStudy": true,
+  "motif": "grid",
+  "overview": "CrowdX watches two live camera feeds, detects people in every frame with YOLOv8, maps them onto a 3×3 grid of zones, and flags zones that are getting dangerously full. A trend engine estimates how fast the crowd is growing so the system can raise an early warning — over WhatsApp, a local alarm and a live dashboard — before the threshold is crossed.",
+  "problem": "Crowd crushes at festivals, concerts, stations and religious gatherings build up over minutes, but the people managing them usually see the danger only once it is visible on the ground. A headcount alone isn’t enough; organisers need to know where the crowd is concentrating and how quickly it is changing.",
+  "motivation": "Built during a hackathon on public safety and AI for social good. The goal was a system an event organiser could actually run with ordinary hardware: a laptop webcam and a phone used as an IP camera.",
+  "objectives": [
+    "Detect and count people in real time from more than one camera",
+    "Localise density to zones instead of reporting a single number per frame",
+    "Estimate the crowd’s growth rate and project it a few seconds ahead",
+    "Alert the right people with a location link the moment risk rises",
+    "Show everything on a live dashboard"
+  ],
+  "features": [
+    "Two simultaneous feeds (laptop webcam + phone IP camera), each on its own processing thread",
+    "YOLOv8n person detection on every frame",
+    "3×3 zone grid per camera; each zone marked safe or unsafe against a per-zone threshold",
+    "Gaussian-blurred density heatmap overlaid on the live video",
+    "Trend engine: growth rate over a rolling window, a 10-second-ahead count projection, and STABLE / GROWING / SURGING / DECLINING labels",
+    "Two-stage alerts — surge warning and overcrowd alert — sent over Twilio WhatsApp with a Google Maps link, plus a local sound alarm",
+    "Suggested safest zone to redirect people towards",
+    "Flask + Socket.IO dashboard with MJPEG streams and JSON endpoints",
+    "Optional MongoDB logging of alerts and 10-second crowd snapshots; the app keeps running if the database is down"
+  ],
+  "architecture": [
+    {
+      "label": "Capture",
+      "detail": "Webcam + IP camera, one thread each, auto-reconnect",
+      "tech": "OpenCV"
+    },
+    {
+      "label": "Detect",
+      "detail": "Person bounding boxes per frame",
+      "tech": "YOLOv8n"
+    },
+    {
+      "label": "Zone density",
+      "detail": "Box centres mapped to a 3×3 grid",
+      "tech": "Python"
+    },
+    {
+      "label": "Risk",
+      "detail": "Per-zone and total thresholds → unsafe zones",
+      "tech": "Python"
+    },
+    {
+      "label": "Trend",
+      "detail": "Growth rate, 10 s projection, surge label",
+      "tech": "Python"
+    },
+    {
+      "label": "Alert",
+      "detail": "WhatsApp + map link, sound alarm",
+      "tech": "Twilio"
+    },
+    {
+      "label": "Dashboard",
+      "detail": "Live streams, zone state, alert log",
+      "tech": "Flask · Socket.IO"
+    },
+    {
+      "label": "History",
+      "detail": "Alerts and snapshots (optional)",
+      "tech": "MongoDB"
+    }
+  ],
+  "workflow": [
+    {
+      "title": "Read a frame",
+      "detail": "Each camera thread reads a frame and reconnects automatically after repeated read failures."
+    },
+    {
+      "title": "Find people",
+      "detail": "YOLOv8n returns boxes; only the “person” class is kept."
+    },
+    {
+      "title": "Place them in zones",
+      "detail": "The centre of each box is mapped to one of nine zones, giving a count per zone."
+    },
+    {
+      "title": "Score risk",
+      "detail": "Zones over the per-zone threshold are marked unsafe; the total is compared with a global threshold."
+    },
+    {
+      "title": "Project the trend",
+      "detail": "The trend engine computes people-per-second growth over the recent window and projects the count 10 seconds ahead."
+    },
+    {
+      "title": "Warn and broadcast",
+      "detail": "On a surge or overcrowd, an alert goes out once per episode, the dashboard updates over Socket.IO, and the event is logged."
+    }
+  ],
+  "decisions": [
+    {
+      "title": "Zones over a single headcount",
+      "detail": "Dividing each frame into a 3×3 grid lets the system say where it is dangerous and point people to the emptiest zone instead."
+    },
+    {
+      "title": "Warn on growth, not just level",
+      "detail": "A projected count from the recent growth rate lets the system fire a surge warning before the overcrowd threshold is reached."
+    },
+    {
+      "title": "One thread per camera",
+      "detail": "Each feed runs independently, so a dropped phone stream shows “No Signal” on its panel without stalling the other camera."
+    },
+    {
+      "title": "Database as optional",
+      "detail": "MongoDB logging is wrapped so the monitoring loop keeps working if the database is unavailable — the safety path never depends on storage."
+    },
+    {
+      "title": "Alert once per episode",
+      "detail": "A per-camera flag stops the system sending a message every frame; it resets when the count drops back below the threshold."
+    }
+  ],
+  "challenges": [
+    {
+      "challenge": "Unreliable phone camera streams",
+      "solution": "The capture loop counts failed reads, releases and reopens the stream, and serves a placeholder frame in the meantime."
+    },
+    {
+      "challenge": "Alert spam",
+      "solution": "Alerts are latched per camera and cleared when the crowd falls back below the threshold."
+    },
+    {
+      "challenge": "Location for alerts",
+      "solution": "A geolocation lookup provides coordinates for the Maps link, with a fixed fallback location when the lookup fails."
+    },
+    {
+      "challenge": "Demonstrating a crush scenario safely",
+      "solution": "A simulation mode with low thresholds lets a handful of people in front of a webcam trigger the full alert pipeline."
+    }
+  ],
+  "testing": [
+    "Configured to run on everyday hardware: a laptop webcam and a phone streaming as an IP camera.",
+    "Small scripts check the two external integrations in isolation: location lookup (test_location.py) and Twilio messaging (test_twilio.py).",
+    "Thresholds in config/settings.py are set for a demo-sized group; they would need calibrating per venue and camera angle.",
+    "No accuracy figures are claimed — the system has not been evaluated on a labelled crowd dataset."
+  ],
+  "limitations": [
+    "Tracking is currently per-frame: each detection gets an index in that frame rather than a persistent ID, so the system counts people but does not follow individuals.",
+    "Growth rate is the slope between the first and last counts in the window, which is sensitive to single-frame detection noise.",
+    "Zone counts use a fixed grid in image space, without correcting for camera perspective.",
+    "YOLOv8n is the smallest model; dense, occluded crowds would need a larger model or a density-estimation approach.",
+    "Simulation thresholds are on by default in the current code."
+  ],
+  "improvements": [
+    "Integrate DeepSORT or ByteTrack for persistent IDs and flow direction",
+    "Fit the trend with a least-squares regression and smoothing over the full window",
+    "Perspective-corrected zones calibrated per camera",
+    "Evaluate counts against a labelled crowd dataset and report error",
+    "Move thresholds and recipient lists into environment configuration"
+  ],
+  "media": [],
+  "verification": "Written from the public CrowdX repository (core/, server.py, alerts/, utils/, config/). Features listed are present in the code.",
+  "order": 2,
+  "sortDate": "2026-03",
+  "showOnResume": true,
+  "resumeStack": "YOLOv8, OpenCV, Flask, Twilio",
+  "resumePoints": [
+    "Computer-vision pipeline running YOLOv8 person detection across two synchronised live video feeds.",
+    "Trend engine that projects crowd count 10 seconds ahead to raise surge warnings before zones overflow."
+  ]
+}
