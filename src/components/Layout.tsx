@@ -160,7 +160,7 @@ export function Footer() {
       </div>
       <div className="page flex flex-col gap-2 border-t border-line/60 py-6 text-xs text-muted sm:flex-row sm:justify-between">
         <p>© {new Date().getFullYear()} {site.fullName} · Bangalore, India</p>
-        <p className="font-mono">dhruvdinasi.com · dhruvdinasi.in</p>
+        <p className="font-mono">{site.url.replace(/^https?:\/\//, '')}</p>
       </div>
     </footer>
   );

@@ -1,4 +1,4 @@
-# Site editor (Sveltia CMS) — open https://dhruvdinasi.com/admin
+# Site editor (Sveltia CMS) — open <your site>/admin
 # Every save commits a JSON file to GitHub; Vercel rebuilds the site in about a minute.
 # If an edit breaks a rule (e.g. a missing required field), the build fails and the
 # previous version of the site stays live — check the Vercel dashboard for the message.
@@ -18,8 +18,8 @@ backend:
 
 media_folder: public/uploads
 public_folder: /uploads
-site_url: https://dhruvdinasi.com
-display_url: https://dhruvdinasi.com
+site_url: https://dhruvdinasi.vercel.app
+display_url: https://dhruvdinasi.vercel.app
 logo:
   src: /favicon.svg
 
@@ -292,7 +292,7 @@ collections:
             accept: application/pdf
             hint: Upload a new PDF here to replace the downloadable resume.
           - { name: resumeUpdated, label: Resume last updated, widget: datetime, time_format: false, format: YYYY-MM-DD }
-          - { name: url, label: Site URL, widget: string, hint: Don’t change unless the main domain changes. }
+          - { name: url, label: Site URL, widget: string, hint: 'The address the site lives at, e.g. https://dhruvdinasi.vercel.app — change it if you move to a custom domain.' }
           - { name: ogImage, label: Social preview image path, widget: string }
 
       - name: home

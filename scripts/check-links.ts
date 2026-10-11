@@ -8,7 +8,9 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-const dist = resolve(import.meta.dirname ?? __dirname, '..', 'dist');
+const root = resolve(import.meta.dirname ?? __dirname, '..');
+const dist = join(root, 'dist');
+const siteUrl = (JSON.parse(readFileSync(join(root, 'content', 'site.json'), 'utf8')) as { url: string }).url.replace(/\/+$/, '');
 const pages: string[] = [];
 (function walk(dir: string) {
   for (const f of readdirSync(dir)) {
@@ -39,7 +41,7 @@ for (const file of pages) {
 
   if (!/<title>[^<]+<\/title>/.test(html)) errors.push(`${rel}: missing <title>`);
   if (!/<meta name="description" content="[^"]+"/.test(html)) errors.push(`${rel}: missing description`);
-  if (!isNotFound && !/<link rel="canonical" href="https:\/\/dhruvdinasi\.com[^"]*"/.test(html)) errors.push(`${rel}: missing canonical`);
+  if (!isNotFound && !html.includes(`<link rel="canonical" href="${siteUrl}`)) errors.push(`${rel}: missing canonical`);
   const h1s = (html.match(/<h1[\s>]/g) ?? []).length;
   if (h1s !== 1) errors.push(`${rel}: expected 1 <h1>, found ${h1s}`);
   const imgsNoAlt = html.match(/<img(?![^>]*\balt=)[^>]*>/g);
@@ -49,7 +51,7 @@ for (const file of pages) {
     const url = m[1].replace(/&amp;/g, '&');
     if (/^(mailto:|tel:|data:|javascript:)/.test(url)) continue;
     if (/^https?:\/\//.test(url)) {
-      if (!url.startsWith('https://dhruvdinasi.com')) external.add(url);
+      if (!url.startsWith(siteUrl)) external.add(url);
       continue;
     }
     if (url.startsWith('#')) {
